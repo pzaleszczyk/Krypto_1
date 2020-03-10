@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 
 public class Kr {
 
@@ -107,7 +108,6 @@ public class Kr {
 	private String[] a_analyze(String extra, String text) {
 		Integer[] primes = {1,3,5,7,9,11,15,17,19,21,23,25};
 		Integer key_a = null, key_b = null;
-		int index = 0;
 		String result = "";
 		
 		for(int i = 0 ; i < 26; i++) {
@@ -119,7 +119,6 @@ public class Kr {
 					result = decrypted;
 					break;
 				}
-				index++;
 			}
 		}
 		if(key_a != null) {
@@ -130,33 +129,33 @@ public class Kr {
 		}
 	} 
 	private String a_decrypt(String text, int a, int b) {
-		char[] result = new char[text.length()];
+		int[] result = new int[text.length()];
+		char[] characters = new char[text.length()];
 		for(int i = 0 ; i < text.length(); i++) {
 			//Polskie znaki przepisuje
 			if((int)text.charAt(i) > 260) {
 				result[i] = text.charAt(i);
 			}
+			
 			else if(Character.isLowerCase(text.charAt(i))) {
-				System.out.println(text.charAt(i)- 'a'-b);
-				result[i] = (char) (text.charAt(i) - 'a' - b);
-				System.out.println((int)result[i] +"Lmao");
-				while(result[i] % a != 0 || (int)result[i] < 0) {
-					System.out.print("+26");
-					result[i] = (char) (int)(result[i]+26);
+				result[i] = (text.charAt(i) - 'a' - b%26);
+				while(result[i] % a != 0 || result[i] < 0) {
+					result[i] = (result[i]+26);
 				}
-				result[i] = (char) ('a' + (result[i]/a)%26);
+				result[i] = ('a' + (result[i]/a)%26);
 			} 
 			else if(Character.isUpperCase(text.charAt(i))) {
-				result[i] = (char) (text.charAt(i) - 'A' - b);
+				result[i] = (text.charAt(i) - 'A' - b%26);
 				while(result[i] % a != 0) {
-					result[i] = (char) (result[i]+26);
+					result[i] = (result[i]+26);
 				}
-				result[i] = (char) ('A' + (result[i]/a)%26);
+				result[i] = ('A' + (result[i]/a)%26);
 			}
 			else
 				result[i] = text.charAt(i);
-		}
-		return new String(result);
+			characters[i] = (char) result[i];
+		}	
+		return new String(characters);
 	}
 	String a_crypt(String text, int a, int b) {
 		System.out.println("A: "+a+" B: "+b);
@@ -166,22 +165,24 @@ public class Kr {
 			System.out.println("ERROR: Niepoprawny format klucza");
 			return null;
 		}
-		char[] result = new char[text.length()];
+		int[] result = new int[text.length()];
+		char[] characters = new char[text.length()];
+		
 		for(int i = 0 ; i < text.length(); i++) {
 			//Polski znak
 			if((int)text.charAt(i)>260) {
 				result[i] = text.charAt(i);
 			}
 			else if(Character.isLowerCase(text.charAt(i))) {
-				result[i] = (char)('a'+((b+a*((int)text.charAt(i)-'a')) % 26));
+				result[i] = ('a'+((b+a*((int)text.charAt(i)-'a')) % 26));
 			}
 			else if(Character.isUpperCase(text.charAt(i)))
-				result[i] = (char)('A'+((b+a*((int)text.charAt(i)-'A')) % 26));
+				result[i] = ('A'+((b+a*((int)text.charAt(i)-'A')) % 26));
 			else
 				result[i] = text.charAt(i);
-			System.out.println(result[i]+" "+text.charAt(i));
+			characters[i] = (char) result[i];
 		}
-		return new String(result);
+		return new String(characters);
 	}
 	
 	String crypt(String text, int key) {
@@ -189,40 +190,44 @@ public class Kr {
 			System.out.println("ERROR: Klucz nie jest z przedzialu (1-25)");
 			return null;
 		}
-		char[] result = new char[text.length()];
+		int[] result = new int[text.length()];
+		char[] characters = new char[text.length()];
+		
 		for(int i = 0 ; i < text.length(); i++) {
 			//Polski znak
 			if((int)text.charAt(i)>260) {
 				result[i] = text.charAt(i);
 			}
 			else if(Character.isLowerCase(text.charAt(i))) {
-				result[i] = (char)('a'+((key+(int)text.charAt(i)-'a') % 26));
+				result[i] = ('a'+((key+(int)text.charAt(i)-'a') % 26));
 			}
 			else if(Character.isUpperCase(text.charAt(i)))
-				result[i] = (char)('A'+((key+(int)text.charAt(i)-'A') % 26));
+				result[i] = ('A'+((key+(int)text.charAt(i)-'A') % 26));
 			else
 				result[i] = text.charAt(i);
-			System.out.println(result[i]+" "+text.charAt(i));
+			characters[i] = (char) result[i];
 		}
-		return new String(result);
+		return new String(characters);
 
 	}
 	String decrypt(String text, int key) {
-		char[] result = new char[text.length()];
+		int[] result = new int[text.length()];
+		char[] characters = new char[text.length()];
 		for(int i = 0 ; i < text.length(); i++) {
 			//Polskie znaki przepisuje
 			if((int)text.charAt(i) > 260) {
 				result[i] = text.charAt(i);
 			}
 			else if(Character.isLowerCase(text.charAt(i))) {
-				result[i] = (char)('a'+((26-key+(int)text.charAt(i)-'a') % 26));
+				result[i] = ('a'+((26-key+(int)text.charAt(i)-'a') % 26));
 			}
 			else if(Character.isUpperCase(text.charAt(i)))
-				result[i] = (char)('A'+((26-key+(int)text.charAt(i)-'A') % 26));
+				result[i] = ('A'+((26-key+(int)text.charAt(i)-'A') % 26));
 			else
 				result[i] = text.charAt(i);
+			characters[i] = (char)result[i];
 		}
-		return new String(result);
+		return new String(characters);
 	}
 	
 	private String[] analyzeAll(String text) {
