@@ -10,9 +10,9 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
-public class Kr {
+public class Cezar {
 
-	public Kr(String[] args) {
+	public Cezar(String[] args) {
 		String temp = "";
 		String[] temps = {};
 		for(int i = 0 ; i < args.length; i++) {
@@ -314,6 +314,6 @@ public class Kr {
 	}
 
 	public static void main(String[] args) {
-		new Kr(args);
+		new Cezar(args);
 	}
 }
