@@ -105,6 +105,15 @@ public class Cezar {
 		}
 		return result;
 	}
+	int inverse(int value) {
+		value = value % 26;
+        for (int x = 1; x < 26; x++) {
+        	if ((value * x) % 26 == 1) {
+        		return x; 
+        	}
+        }
+        return -1; 
+	}
 	private String[] a_analyze(String extra, String text) {
 		Integer[] primes = {1,3,5,7,9,11,15,17,19,21,23,25};
 		Integer key_a = null, key_b = null;
@@ -161,7 +170,7 @@ public class Cezar {
 		System.out.println("A: "+a+" B: "+b);
 	    int gcd =  BigInteger.valueOf(a).gcd(BigInteger.valueOf(26)).intValue();
 
-		if(gcd != 1) {
+		if(gcd != 1 || inverse(a) == -1) {
 			System.out.println("ERROR: Niepoprawny format klucza");
 			return null;
 		}
